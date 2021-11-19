@@ -1,0 +1,50 @@
+.App {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.Score {
+    width: 100%;
+    margin-bottom: 2%;
+    text-align: center;
+}
+
+.Grid {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.Row {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+}
+
+.GameOverContainer {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.GameOver {
+    position: relative;
+    background-color: #fff;
+    border: 10px double rgb(228, 152, 38);
+    padding: 1rem 2rem;
+}
+
+.GameOver p {
+  text-align: center;
+  font-size: 2rem;
+  color: red;
+}
