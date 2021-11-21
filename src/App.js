@@ -29,7 +29,7 @@ function App() {
 
     const revealHandler = (cellData) => {
         cellData.value === 0 && revealZero(cellData);
-        cellData.value !== 0 && revealDiffThanZero(cellData);
+        cellData.value && cellData.value !== 0 && revealDiffThanZero(cellData);
         cellData.isBomb && revealBomb(cellData);
     }
 
@@ -84,6 +84,11 @@ function App() {
     const revealBomb = (cellData) => {
         showValue(cellData);
         setGameOver(true);
+        for(let i = 0; i < gridX; i++) {
+            for(let j = 0; j < gridY; j++) {
+                showValue(cellsData[i][j]);
+            }
+        }
     }
 
     const showValue = (cellData) => {
@@ -100,17 +105,40 @@ function App() {
             cellsData[i] = [];
 
             for(let j = 0; j < gridY; j++) {
-                let randomInt = Math.floor(Math.random() * (6 - -1)) + -1;
+                let randomInt = Math.floor(Math.random() * (10 - 0)) + 0;
 
                 let cellData = {
                     x: i,
                     y: j,
-                    value: randomInt >= 0 ? randomInt : null,
                     revealed: false,
-                    isBomb: randomInt < 0
+                    isBomb: randomInt >= 7
                 };
 
                 cellsData[i][j] = cellData;
+            }
+        }
+
+        for(let i = 0; i < gridX; i++) {
+            for(let j = 0; j < gridY; j++) {
+                let currentCellData = cellsData[i][j];
+                let { x, y, isBomb } = currentCellData;
+
+                let xMin = x - 1 > 0 ? x - 1 : 0;
+                let xMax = x + 1 < gridX ? x + 1 : gridX - 1;
+                let yMin = y - 1 > 0 ? y - 1 : 0;
+                let yMax = y + 1 < gridY ? y + 1 : gridY - 1;
+
+                if(!isBomb) {
+                    currentCellData.value = 0;
+
+                    for(let adyI = xMin; adyI <= xMax; adyI++) {
+                        for(let adyJ = yMin; adyJ <= yMax; adyJ++) {
+                            if(cellsData[adyI][adyJ].isBomb) {
+                                currentCellData.value++;
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -169,11 +197,12 @@ function App() {
                         </div>
                     </div>
                 ) 
-                : null
+                : (
+                    <div className="Score">
+                        Score: {score}
+                    </div>
+                )
             }
-            <div className="Score">
-                Score: {score}
-            </div>
             <div className="Grid">            
                 {cells.length > 0 && cellsData.length > 0 && showGrid()}
             </div>
